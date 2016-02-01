@@ -12,6 +12,6 @@ services:
             - {name: ezpublish.fieldType, alias: ezobjectrelationlistplus}
     ezojectrelationlistplustype.ezobjectrelationlistplus.converter:
         class: %ezobjectrelationlistplustype.ezobjectrelationlistplus.converter.class%
-        aguments: [@ezpublish.api.storage_engine.legacy.dbhandler]
+        arguments: [@ezpublish.api.storage_engine.legacy.dbhandler]
         tags:
             - {name: ezpublish.storageEngine.legacy.converter, alias: ezobjectrelationlistplus}
