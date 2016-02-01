@@ -1,0 +1,17 @@
+parameters:
+# ezobjectrelationlistplus
+    ezobjectrelationlistplustype.ezobjectrelationlistplus.class: xrow\EzobjectrelationlistplusBundle\FieldType\EzObjectrelationListPlus\Type
+    ezobjectrelationlistplustype.ezobjectrelationlistplus.converter.class: xrow\EzobjectrelationlistplusBundle\FieldType\EzObjectrelationListPlus\EzObjectrelationListPlusConverter
+
+services:
+# ezobjectrelationlistplus
+    ezobjectrelationlistplustype.ezobjectrelationlistplus:
+        class: %ezobjectrelationlistplustype.ezobjectrelationlistplus.class%
+        parent: ezpublish.fieldType
+        tags:
+            - {name: ezpublish.fieldType, alias: ezobjectrelationlistplus}
+    ezojectrelationlistplustype.ezobjectrelationlistplus.converter:
+        lass: %ezobjectrelationlistplustype.ezobjectrelationlistplus.converter.class%
+        aguments: [@ezpublish.api.storage_engine.legacy.dbhandler]
+        tags:
+            - {name: ezpublish.storageEngine.legacy.converter, alias: ezobjectrelationlistplus}
