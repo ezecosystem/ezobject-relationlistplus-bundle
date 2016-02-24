@@ -93,6 +93,7 @@ class EzObjectrelationListPlusConverter implements Converter
             return;
 
         $priorityByContentId = array();
+        $priorityByContentId_array = array();
 
         $dom = new DOMDocument( '1.0', 'utf-8' );
         if ( $dom->loadXML( $value->dataText ) === true )
@@ -100,14 +101,22 @@ class EzObjectrelationListPlusConverter implements Converter
             foreach ( $dom->getElementsByTagName( 'relation-item' ) as $relationItem )
             {
                 /** @var \DOMElement $relationItem */
-                $priorityByContentId[$relationItem->getAttribute( 'contentobject-id' )] =
+                $contentId_key=$relationItem->getAttribute( 'contentobject-id' )."-".$relationItem->getAttribute( 'origin' );
+                $priorityByContentId[$contentId_key] =
                     $relationItem->getAttribute( 'priority' );
             }
         }
 
         asort( $priorityByContentId, SORT_NUMERIC );
-
-        $fieldValue->data['destinationContentIds'] = array_keys( $priorityByContentId );
+        
+        $new_ContentId_array=array_keys( $priorityByContentId );
+        
+        foreach($new_ContentId_array as $new_ContentId){
+            $new_ContentId_temp=explode("-", $new_ContentId);
+            $priorityByContentId_array[$new_ContentId]=intval($new_ContentId_temp[0]);
+        }
+        
+        $fieldValue->data['destinationContentIds'] = $priorityByContentId_array;
     }
 
     /**
