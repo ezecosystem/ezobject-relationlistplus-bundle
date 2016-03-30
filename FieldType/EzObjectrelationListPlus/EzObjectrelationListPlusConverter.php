@@ -51,11 +51,17 @@ class EzObjectrelationListPlusConverter implements Converter
         $relationList = $doc->createElement( 'relation-list' );
         $data = $this->getRelationXmlHashFromDB( $value->data['destinationContentIds'] );
         $priority = 0;
-        $playinfront = 0;
-        $origin=1;
-
-        foreach ( $value->data['destinationContentIds'] as $id )
+        foreach ( $value->data['destinationContentIds'] as $mixkey => $id )
         {
+            if(strstr($mixkey,'-')) {
+                $id_string = explode("-", $mixkey);
+                $origin = intval($id_string[1]);
+                $playinfront = intval($id_string[2]);
+            }else{
+                $playinfront = 0;
+                $origin=1;
+            }
+            
             $row = $data[$id][0];
             $row["ezcontentobject_id"] = $id;
             $row["priority"] = ( $priority += 1 );
@@ -101,7 +107,7 @@ class EzObjectrelationListPlusConverter implements Converter
             foreach ( $dom->getElementsByTagName( 'relation-item' ) as $relationItem )
             {
                 /** @var \DOMElement $relationItem */
-                $contentId_key=$relationItem->getAttribute( 'contentobject-id' )."-".$relationItem->getAttribute( 'origin' );
+                $contentId_key=$relationItem->getAttribute( 'contentobject-id' )."-".$relationItem->getAttribute( 'origin' )."-".$relationItem->getAttribute( 'playinfront' );
                 $priorityByContentId[$contentId_key] =
                     $relationItem->getAttribute( 'priority' );
             }
